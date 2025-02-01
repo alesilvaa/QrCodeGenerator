@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de QR</title>
+</head>
+<body>
+    <h1>Generador de Código QR</h1>
+    <input type="text" id="urlInput" placeholder="Ingresa la URL">
+    <button id="generateBtn">Generar QR</button>
+    <br>
+    <img id="qrImage" style="display:none; margin-top: 10px; width: 200px; height: 200px;">
+
+    <script>
+        document.getElementById("generateBtn").addEventListener("click", async () => {
+            const url = document.getElementById("urlInput").value;
+            if (!url) {
+                alert("Por favor, ingresa una URL.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/generate_qr?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (data.qrCode) {
+                    const img = document.getElementById("qrImage");
+                    img.src = data.qrCode;  // Asigna la imagen base64 al src del <img>
+                    img.style.display = "block";
+                } else {
+                    alert("No se pudo generar el QR.");
+                }
+            } catch (error) {
+                alert("Error al conectar con el servidor.");
+            }
+        });
+    </script>
+</body>
+</html>
