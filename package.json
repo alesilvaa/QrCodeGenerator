@@ -2,13 +2,11 @@
   "name": "qrcode",
   "version": "1.0.0",
   "main": "dist/server.js",
-  "scripts": {
-    "start": "node dist/server.js",
-    "dev": "npx nodemon src/index.ts",
-    "build": "tsc",
-    "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../frontend && npm run build && @powershell Copy-Item -Recurse dist ../backend",
-    "lint": "eslint ."
-  },
+ "scripts": {
+  "build": "tsc",
+  "start": "node dist/index.js"
+}
+,
   "dependencies": {
     "@types/node": "^22.13.0",
     "cors": "^2.8.5",
