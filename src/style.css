@@ -88,6 +88,22 @@ h1 {
     display: none;
 }
 
+.download-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    background: #28a745;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+    background: #218838;
+}
+
 @media (max-width: 480px) {
     .container {
         padding: 1.5rem;

@@ -19,38 +19,50 @@
         <div class="error-message" id="errorMessage"></div>
         
         <img id="qrImage" style="display: none;">
+        <!-- Botón para descargar el QR (inicialmente oculto) -->
+        <a id="downloadBtn" download="qr.png" style="display: none;" class="download-btn">Descargar QR</a>
     </div>
 
-    <script>
-        // (El mismo JavaScript que tenías, pero con mejor manejo de errores)
-        document.getElementById("generateBtn").addEventListener("click", async () => {
-            const url = document.getElementById("urlInput").value;
-            const errorMessage = document.getElementById("errorMessage");
-            errorMessage.style.display = "none";
+<script>
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+        const url = document.getElementById("urlInput").value;
+        const errorMessage = document.getElementById("errorMessage");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const img = document.getElementById("qrImage");
 
-            if (!url) {
-                errorMessage.textContent = "Por favor, ingresa una URL.";
+        // Ocultamos mensajes y botón de descarga inicialmente
+        errorMessage.style.display = "none";
+        downloadBtn.style.display = "none";
+        img.style.display = "none";
+
+        if (!url) {
+            errorMessage.textContent = "Por favor, ingresa una URL.";
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/generate_qr?url=${encodeURIComponent(url)}`);
+            const data = await response.json();
+
+            if (data.qrCode) {
+                // Asignamos la imagen del QR
+                img.src = data.qrCode;
+                img.style.display = "block";
+                
+                // Configuramos el botón de descarga
+                downloadBtn.href = data.qrCode;  // La imagen en base64
+                downloadBtn.style.display = "inline-block";
+            } else {
+                errorMessage.textContent = "No se pudo generar el QR.";
                 errorMessage.style.display = "block";
-                return;
             }
+        } catch (error) {
+            errorMessage.textContent = "Error al conectar con el servidor.";
+            errorMessage.style.display = "block";
+        }
+    });
+</script>
 
-            try {
-                const response = await fetch(`http://localhost:3000/generate_qr?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-
-                if (data.qrCode) {
-                    const img = document.getElementById("qrImage");
-                    img.src = data.qrCode;
-                    img.style.display = "block";
-                } else {
-                    errorMessage.textContent = "No se pudo generar el QR.";
-                    errorMessage.style.display = "block";
-                }
-            } catch (error) {
-                errorMessage.textContent = "Error al conectar con el servidor.";
-                errorMessage.style.display = "block";
-            }
-        });
-    </script>
 </body>
 </html>
