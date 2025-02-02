@@ -1,13 +1,14 @@
 {
   "name": "qrcode",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-  "start": "npx nodemon src/index.ts",
-  "dev": "npx nodemon src/index.ts",
-  "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../frontend && npm run build && @powershell Copy-Item -Recurse dist ../backend",
-  "lint": "eslint ."
-},
+    "start": "node dist/server.js",
+    "dev": "npx nodemon src/index.ts",
+    "build": "tsc",
+    "build:ui": "@powershell Remove-Item -Recurse -Force dist && cd ../frontend && npm run build && @powershell Copy-Item -Recurse dist ../backend",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@types/node": "^22.13.0",
     "cors": "^2.8.5",
