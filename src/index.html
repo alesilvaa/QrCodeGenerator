@@ -4,19 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de QR</title>
+    <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
-    <h1>Generador de Código QR</h1>
-    <input type="text" id="urlInput" placeholder="Ingresa la URL">
-    <button id="generateBtn">Generar QR</button>
-    <br>
-    <img id="qrImage" style="display:none; margin-top: 10px; width: 200px; height: 200px;">
+    <div class="container">
+        <h1>Generador de Código QR</h1>
+        
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Ingresa la URL">
+        </div>
+        
+        <button id="generateBtn">Generar QR</button>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
+        <img id="qrImage" style="display: none;">
+    </div>
 
     <script>
+        // (El mismo JavaScript que tenías, pero con mejor manejo de errores)
         document.getElementById("generateBtn").addEventListener("click", async () => {
             const url = document.getElementById("urlInput").value;
+            const errorMessage = document.getElementById("errorMessage");
+            errorMessage.style.display = "none";
+
             if (!url) {
-                alert("Por favor, ingresa una URL.");
+                errorMessage.textContent = "Por favor, ingresa una URL.";
+                errorMessage.style.display = "block";
                 return;
             }
 
@@ -26,13 +40,15 @@
 
                 if (data.qrCode) {
                     const img = document.getElementById("qrImage");
-                    img.src = data.qrCode;  // Asigna la imagen base64 al src del <img>
+                    img.src = data.qrCode;
                     img.style.display = "block";
                 } else {
-                    alert("No se pudo generar el QR.");
+                    errorMessage.textContent = "No se pudo generar el QR.";
+                    errorMessage.style.display = "block";
                 }
             } catch (error) {
-                alert("Error al conectar con el servidor.");
+                errorMessage.textContent = "Error al conectar con el servidor.";
+                errorMessage.style.display = "block";
             }
         });
     </script>
